@@ -75,15 +75,16 @@ def transcribe():
         processed_filepath = preprocess_audio(filepath)
         logger.info("Audio preprocessing completed")
 
-        # Transcribe using Whisper
-        logger.info("Starting transcription")
-        result = model.transcribe(processed_filepath)
-        logger.info("Transcription completed")
+        # Transcribe using Whisper with English translation
+        logger.info("Starting transcription with English translation")
+        result = model.transcribe(processed_filepath, task="translate")  # This will translate to English
+        logger.info("Transcription and translation completed")
 
         # Return transcription with detected language
         return jsonify({
-            "transcript": result["text"],
-            "language": result["language"]
+            "transcript": result["text"],  # This will be in English
+            "language": result["language"],  # Original detected language
+            "is_translation": result["language"] != "en"  # Flag to indicate if translation occurred
         })
     
     except Exception as e:

@@ -24,6 +24,7 @@ function VoiceToTextFIR() {
   const [isRecording, setIsRecording] = useState(false);
   const [transcript, setTranscript] = useState('');
   const [detectedLanguage, setDetectedLanguage] = useState('');
+  const [isTranslation, setIsTranslation] = useState(false);
   const [error, setError] = useState('');
   const mediaRecorderRef = useRef(null);
   const chunksRef = useRef([]);
@@ -71,6 +72,7 @@ function VoiceToTextFIR() {
           } else {
             setTranscript(data.transcript);
             setDetectedLanguage(data.language);
+            setIsTranslation(data.is_translation);
             setError('');
           }
         } catch (err) {
@@ -120,9 +122,17 @@ function VoiceToTextFIR() {
           <div className="flex items-center gap-2 mb-2">
             <h2 className="font-semibold">Transcription</h2>
             {detectedLanguage && (
-              <span className="px-2 py-1 text-sm bg-blue-100 text-blue-800 rounded-full">
-                {LANGUAGE_NAMES[detectedLanguage] || detectedLanguage}
-              </span>
+              <div className="flex items-center gap-2">
+                <span className="px-2 py-1 text-sm bg-blue-100 text-blue-800 rounded-full">
+                  Original: {LANGUAGE_NAMES[detectedLanguage] || detectedLanguage}
+                </span>
+                {isTranslation && (
+                  <span className="px-2 py-1 text-sm bg-green-100 text-green-800 rounded-full flex items-center gap-1">
+                    <span>🔄</span>
+                    <span>Translated to English</span>
+                  </span>
+                )}
+              </div>
             )}
           </div>
           <p className="whitespace-pre-wrap">{transcript}</p>
