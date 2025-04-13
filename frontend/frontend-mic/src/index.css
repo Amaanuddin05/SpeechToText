@@ -1,0 +1,17 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Reset any existing styles */
+body {
+  margin: 0;
+  padding: 0;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Override any light theme defaults */
+#root {
+  min-height: 100vh;
+  background-color: #111827; /* bg-gray-900 equivalent */
+}
