@@ -80,8 +80,11 @@ def transcribe():
         result = model.transcribe(processed_filepath)
         logger.info("Transcription completed")
 
-        # Return transcription
-        return jsonify({"transcript": result["text"]})
+        # Return transcription with detected language
+        return jsonify({
+            "transcript": result["text"],
+            "language": result["language"]
+        })
     
     except Exception as e:
         logger.error(f"Error during transcription: {str(e)}")

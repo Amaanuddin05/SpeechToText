@@ -1,8 +1,29 @@
 import React, { useState, useRef } from 'react';
 
+// Language code to full name mapping
+const LANGUAGE_NAMES = {
+  en: 'English',
+  es: 'Spanish',
+  fr: 'French',
+  de: 'German',
+  it: 'Italian',
+  pt: 'Portuguese',
+  nl: 'Dutch',
+  pl: 'Polish',
+  ru: 'Russian',
+  ja: 'Japanese',
+  ko: 'Korean',
+  zh: 'Chinese',
+  ar: 'Arabic',
+  hi: 'Hindi',
+  bn: 'Bengali',
+  // Add more languages as needed
+};
+
 function VoiceToTextFIR() {
   const [isRecording, setIsRecording] = useState(false);
   const [transcript, setTranscript] = useState('');
+  const [detectedLanguage, setDetectedLanguage] = useState('');
   const [error, setError] = useState('');
   const mediaRecorderRef = useRef(null);
   const chunksRef = useRef([]);
@@ -49,6 +70,7 @@ function VoiceToTextFIR() {
             setError(data.error);
           } else {
             setTranscript(data.transcript);
+            setDetectedLanguage(data.language);
             setError('');
           }
         } catch (err) {
@@ -95,7 +117,14 @@ function VoiceToTextFIR() {
 
       {transcript && (
         <div className="mt-4 p-4 bg-gray-100 rounded-lg">
-          <h2 className="font-semibold mb-2">Transcription:</h2>
+          <div className="flex items-center gap-2 mb-2">
+            <h2 className="font-semibold">Transcription</h2>
+            {detectedLanguage && (
+              <span className="px-2 py-1 text-sm bg-blue-100 text-blue-800 rounded-full">
+                {LANGUAGE_NAMES[detectedLanguage] || detectedLanguage}
+              </span>
+            )}
+          </div>
           <p className="whitespace-pre-wrap">{transcript}</p>
         </div>
       )}
